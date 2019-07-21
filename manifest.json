@@ -1,0 +1,13 @@
+{
+    "name": "Github Time Travel",
+    "version": "1.0",
+    "description": "Allows users to easily travel to different versions in time of a file.",
+    "manifest_version": 2,
+    "permissions": [
+        "activeTab"
+    ],
+    "content_scripts": [{
+        "matches": ["https://github.com/*/*/blob/*/*"],
+        "js": ["dist/bundle.js"]
+    }]
+}
