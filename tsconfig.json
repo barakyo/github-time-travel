@@ -12,6 +12,9 @@
     "include": [
         "src/**/*"
     ],
+    "types": [
+        "chrome"
+    ],
     "exclude": [
         "node_modules",
         "**/*.spec.ts"

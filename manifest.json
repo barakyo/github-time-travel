@@ -4,8 +4,13 @@
     "description": "Allows users to easily travel to different versions in time of a file.",
     "manifest_version": 2,
     "permissions": [
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
+    "browser_action": {
+        "default_title": "Github Time Travel",
+        "default_popup": "options/options.html"
+    },
     "content_scripts": [{
         "matches": ["https://github.com/*/*/blob/*/*"],
         "js": ["dist/bundle.js"]

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="card zero-margins hide" id="saved">
+        <div class="card-content">
+            <h5>
+                <i class="material-icons">check</i>
+                Saved
+            </h5>
+        </div>
+    </div>
+    <div class="card zero-margins" id="optionsForm">
+        <div class="card-content">
+            <span class="card-title">Github Time Travel Options</span>
+            <input placeholder="Personal Access Token" id="personalAccessToken" type="text" class="validate">
+            <label for="personalAccessToken">Personal Access Token</label>
+            <span class="helper-text" data-error="wrong" data-success="right">
+                Add a Github Personal access token to avoid being rate limited and to to allow Github Time Travel access to private repositories. Note: You'll need the persmissions: repo_status and public_repo.
+            </span>
+
+        </div>
+        <div class="card-action">
+            <button id="save-btn" class="btn waves-effect waves-light " type="submit" name="action">
+                Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </div>
+    <!-- Compiled and minified JavaScript -->
+    <script src="js/materialize.min.js"></script>
+    <script src="js/options.js"></script>
+</body>
+
+</html>

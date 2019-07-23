@@ -1,8 +1,8 @@
 import Octokit from '@octokit/rest';
-console.log('Github Time Travel');
 
 const BLOB = "blob";
 const DEFAULT_LINK_CLASSES = "btn btn-sm BtnGroup-item";
+const btnGroups = document.querySelectorAll('.Box.mt-3 > .Box-header > .d-flex > .BtnGroup')
 
 interface OctokitCommit {
     author: any;
@@ -34,8 +34,16 @@ class GithubFilePage {
         this.repo = pathTokens[2];
         this.sha = pathTokens[4];
         this.filepath = pathTokens.slice(5).join("/");
-        this.octokit = new octokit();
         this.commits = [];
+        chrome.storage.sync.get(['personalAccessToken'], (result) => {
+            console.log('result', result);
+            if (result.personalAccessToken) {
+                this.octokit = new octokit({ auth: result.personalAccessToken });
+            } else {
+                this.octokit = new octokit();
+            }
+            this.injectButtons();
+        });
     }
 
     private async fetchCommits() {
@@ -59,6 +67,12 @@ class GithubFilePage {
         return link;
     }
 
+    private getCurrentShaIndex() {
+        const currentShaIndex = this.commits.findIndex(commit => commit === this.sha);
+        // Assume that sha is a branch so use first commit
+        return (currentShaIndex <= 0) ? 0 : currentShaIndex;
+    }
+
     async getPreviousLink(): Promise<Element> {
         if (this.commits.length === 0) {
             await this.fetchCommits();
@@ -66,11 +80,7 @@ class GithubFilePage {
         if (this.commits.length === 1) {
             return null;
         }
-        let currentShaIndex = this.commits.findIndex(commit => commit === this.sha);
-        if (currentShaIndex <= 0) {
-            // Assume that sha is a branch so use first commit
-            currentShaIndex = 0;
-        }
+        const currentShaIndex = this.getCurrentShaIndex();
         return this.createLink(this.commits[currentShaIndex + 1], '<');
     }
 
@@ -81,33 +91,27 @@ class GithubFilePage {
         if (this.commits.length === 1) {
             return null;
         }
-        let currentShaIndex = this.commits.findIndex(commit => commit === this.sha);
-        if (currentShaIndex <= 0) {
-            // Assume that sha is a branch so use first commit
-            currentShaIndex = 0;
+        const currentShaIndex = this.getCurrentShaIndex();
+        return (currentShaIndex - 1 < 0) ? null : this.createLink(this.commits[currentShaIndex - 1], '>');
+    }
+
+    async injectButtons() {
+        if (btnGroups.length > 0) {
+            const btnGroup = btnGroups[0];
+            const prevLink = await this.getPreviousLink();
+            const nextLink = await this.getNextLink();
+            if (prevLink) {
+                btnGroup.insertBefore(prevLink, btnGroup.children[0]);
+            }
+            if (nextLink) {
+                btnGroup.appendChild(nextLink);
+            }
         }
-        if (currentShaIndex - 1 < 0) {
-            return null;
-        }
-        return this.createLink(this.commits[currentShaIndex - 1], '>');
     }
 }
 
-
 async function main() {
-    const btnGroups = document.querySelectorAll('.Box.mt-3 > .Box-header > .d-flex > .BtnGroup')
-    const ghFilePage = new GithubFilePage(window.location.pathname);
-    if (btnGroups.length > 0) {
-        const btnGroup = btnGroups[0];
-        const prevLink = await ghFilePage.getPreviousLink();
-        const nextLink = await ghFilePage.getNextLink();
-        if (prevLink) {
-            btnGroup.insertBefore(prevLink, btnGroup.children[0]);
-        }
-        if (nextLink) {
-            btnGroup.appendChild(nextLink);
-        }
-    }
+    new GithubFilePage(window.location.pathname);
 }
 
 main();
