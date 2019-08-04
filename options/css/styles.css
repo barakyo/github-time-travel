@@ -1,7 +1,16 @@
 body {
+  height: 100%;
   width: 300px;
 }
 
 .zero-margins {
   margin: 0;
+}
+
+#save-btn {
+  width: 100%;
+}
+
+#options-form .card-title {
+  font-size: 22px;
 }
