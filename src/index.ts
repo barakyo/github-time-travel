@@ -36,7 +36,6 @@ class GithubFilePage {
         this.filepath = pathTokens.slice(5).join("/");
         this.commits = [];
         chrome.storage.sync.get(['personalAccessToken'], (result) => {
-            console.log('result', result);
             if (result.personalAccessToken) {
                 this.octokit = new octokit({ auth: result.personalAccessToken });
             } else {
