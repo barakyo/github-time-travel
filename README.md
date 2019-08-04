@@ -3,7 +3,7 @@
 ## Description
 This is a simple Chrome extension that allows you to easily traverse the history of a file within Github. To do so, this extension uses the Github API to fetch the next and previous commits when you're viewing a file and adds small little `<` and `>` buttons to a files options on Github. Clicking on these buttons, will go to the previous or next commit of the file.
 
-![Example](https://raw.githubusercontent.com/barakyo/gh-time-travel/master/docs/images/github-time-travel-example.png)
+![Example](https://github.com/barakyo/github-time-travel/blob/master/docs/images/gh-time-travel-example.png?raw=true)
 
 ## Contributing
 
